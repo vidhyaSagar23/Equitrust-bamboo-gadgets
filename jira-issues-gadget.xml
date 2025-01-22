@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs
+      title="Bamboo Plan Summary Chart"
+      author="SAGAR VP"
+      description="Displays a plan summary chart for a selected Bamboo plan."
+      author_email="vidhyasagar2k01@gmail.com"
+      directory_title="Bamboo Plan Summary Chart"
+      screenshot="https://example.com/path/to/screenshot.png"
+      thumbnail="https://example.com/path/to/thumbnail.png">
+    <Require feature="dynamic-height" />
+    <Require feature="views" />
+    <Optional feature="auth-refresh" />
+  </ModulePrefs>
+
+  <UserPref name="bamboo_url"
+            display_name="Bamboo Server URL"
+            datatype="url"
+            default_value="https://your-bamboo-server.com" />
+
+  <UserPref name="plan_key"
+            display_name="Plan Key"
+            datatype="string"
+            default_value="PROJECT-PLAN" />
+
+  <Content type="html">
+    <![CDATA[
+      <script type="text/javascript">
+        // JavaScript to dynamically load chart data
+        function loadPlanSummaryChart() {
+          var bambooUrl = gadgets.util.getUrlParameters().bamboo_url;
+          var planKey = gadgets.util.getUrlParameters().plan_key;
+          var chartUrl = bambooUrl + "/rest/api/latest/chart/planSummary?planKey=" + encodeURIComponent(planKey);
+
+          var chartContainer = document.getElementById('chartContainer');
+          chartContainer.innerHTML = '<img src="' + chartUrl + '" alt="Plan Summary Chart" />';
+        }
+
+        gadgets.util.registerOnLoadHandler(loadPlanSummaryChart);
+      </script>
+      <div id="chartContainer">
+        <p>Loading chart...</p>
+      </div>
+    ]]>
+  </Content>
+</Module>
